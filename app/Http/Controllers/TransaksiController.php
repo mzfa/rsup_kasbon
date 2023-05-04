@@ -14,7 +14,11 @@ class TransaksiController extends Controller
 {
     public function index()
     {
-        $data = DB::table('transaksi')->whereNull('deleted_at')->get();
+        $data = DB::table('transaksi')->leftJoin('users', 'transaksi.created_by', '=', 'users.id')
+        ->select([
+            'users.username',
+            'transaksi.*',
+        ])->whereNull('transaksi.deleted_at')->get();
         return view('transaksi.index', compact('data'));
     }
 
@@ -24,14 +28,15 @@ class TransaksiController extends Controller
         //     'nama_transaksi' => ['required', 'string'],
         // ]);
         $no_urut = DB::table('transaksi')->max('no_transaksi');
-        $urutan = (int) substr($no_urut,2,5);
+        $urutan = (int) substr($no_urut,0,3);
         $urutan++;
-        $huruf = "TR";
-        $no_transaksi = $huruf.sprintf("%05s",$urutan);
+        $huruf = "/KK/".date('m')."/".date('Y');
+        $no_transaksi = sprintf("%03s",$urutan).$huruf;
         $keterangan = '';
         if($request->no_spb){
             $keterangan = 'SPB';
         }
+        // dd($no_transaksi);
         // $no_transaksi = 1;
         $data = [
             'no_transaksi' => $no_transaksi,
@@ -71,7 +76,7 @@ class TransaksiController extends Controller
                 '<div class="mb-3 row">'.
                     '<label for="staticEmail" class="col-sm-2 col-form-label">Nominal</label>'.
                     '<div class="col-sm-10">'.
-                    '<input type="text" class="form-control" id="nominal" name="nominal" value="'.$data->nominal.'" required>'.
+                    '<input type="text" class="form-control" id="nominal" name="nominal" value="'.$data->nominal.'" required readonly>'.
                     '</div>'.
                 '</div>'.
                 '<div class="mb-3 row">'.
@@ -102,8 +107,8 @@ class TransaksiController extends Controller
         $data = [
             'uraian' => $request->uraian,
             'no_spb' => $request->no_spb,
-            'keterangan' => $keterangan,
-            'nominal' => $request->nominal,
+            // 'keterangan' => $keterangan,
+            // 'nominal' => $request->nominal,
             'diterima' => $request->diterima,
             'pj' => $request->pj,
             'updated_by' => Auth::user()->id,
@@ -125,7 +130,11 @@ class TransaksiController extends Controller
     }
     public function print($id){
         $id = Crypt::decrypt($id);
-        $data = DB::table('transaksi')->where(['transaksi_id' => $id])->first();
+        $data = DB::table('transaksi')->leftJoin('users', 'transaksi.created_by', '=', 'users.id')
+        ->select([
+            'users.username',
+            'transaksi.*',
+        ])->whereNull('transaksi.deleted_at')->where(['transaksi.transaksi_id' => $id])->first();
 
         return view('transaksi.print', compact('data'));
     }

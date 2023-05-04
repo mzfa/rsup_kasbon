@@ -18,6 +18,7 @@
                                 <thead>
                                     <tr class="ligth">
                                         <th>#</th>
+                                        <th>Tanggal/Dibuat Oleh</th>
                                         <th>Uraian</th>
                                         <th>No SPB</th>
                                         <th>Nominal</th>
@@ -30,10 +31,11 @@
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $item->no_transaksi }}</td>
+                                            <td>{{ date('d-m-Y', strtotime($item->created_at)) }} / {{ $item->username }}</td>
                                             <td>{{ $item->uraian }}</td>
                                             <td>{{ $item->no_spb }}</td>
                                             <td>Rp. {{ number_format($item->nominal) }}</td>
-                                            <td>@if($item->keterangan == "SPB") <span class="badge badge-primary">SPB</span> @else <span class="badge badge-danger">NON SPB</span> @endif</td>
+                                            <td>@if($item->keterangan == "SPB") <span class="badge badge-primary">SPB</span> @else <span class="badge badge-danger">NON SPB / KASBON</span> @endif</td>
                                             <td>
                                                 <span class="badge badge-primary">{{ $item->pj }}</span> 
                                             </td>

@@ -14,7 +14,11 @@ class PembayaranController extends Controller
 {
     public function index()
     {
-        $data = DB::table('transaksi')->whereNull('deleted_at')->whereNotNull('no_spb')->get();
+        $data = DB::table('transaksi')->leftJoin('users', 'transaksi.created_by', '=', 'users.id')
+        ->select([
+            'users.username',
+            'transaksi.*',
+        ])->whereNull('transaksi.deleted_at')->whereNotNull('no_spb')->get();
         return view('pembayaran.index', compact('data'));
     }
     
