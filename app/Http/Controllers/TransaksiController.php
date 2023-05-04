@@ -30,13 +30,17 @@ class TransaksiController extends Controller
         $no_urut = DB::table('transaksi')->max('no_transaksi');
         $urutan = (int) substr($no_urut,0,3);
         $urutan++;
+        $bt = substr($no_urut,-7);
+        if($bt != date('m')."/".date('Y')){
+            $urutan = 1;
+        }
         $huruf = "/KK/".date('m')."/".date('Y');
         $no_transaksi = sprintf("%03s",$urutan).$huruf;
         $keterangan = '';
         if($request->no_spb){
             $keterangan = 'SPB';
         }
-        // dd($no_transaksi);
+        // dd($urutan);
         // $no_transaksi = 1;
         $data = [
             'no_transaksi' => $no_transaksi,
