@@ -138,7 +138,7 @@
                 <td align="center">
                     Jakarta Utara, {{ date('d M Y') }} <br>
                     PJ KAS
-                    <br><br><br><br><br><br>
+                    <br><br><br><br><br>
                     ({{ $data->pj }})
                 </td>
             </tr>
