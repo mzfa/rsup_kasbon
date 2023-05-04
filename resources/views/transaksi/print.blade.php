@@ -129,7 +129,7 @@
                     <br><br><br><br><br><br>
                     ({{ Auth::user()->name }})
                 </td>
-                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td></td>
                 <td align="center">
                     DITERIMA
                     <br><br><br><br><br><br>
