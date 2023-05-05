@@ -102,9 +102,11 @@ Route::group(['middleware' => ['auth']], function () {
     });
     Route::controller(KasbonController::class)->middleware('cek_login:kasbon.index')->group(function () {
         Route::get('/kasbon/index', 'index')->name('kasbon.index');
+        Route::get('/kasbon/export_excel', 'export_excel');
     });
     Route::controller(PembayaranController::class)->middleware('cek_login:pembayaran.index')->group(function () {
         Route::get('/pembayaran/index', 'index')->name('pembayaran.index');
+        Route::get('/pembayaran/export_excel', 'export_excel');
     });
     // Route::get('/tes_pesan', 'index')->name('tes_pesan.index');
     Route::get('/tes_pesan', [\App\Http\Controllers\TestPesanController::class, 'index'])->name('tes_pesan.index');

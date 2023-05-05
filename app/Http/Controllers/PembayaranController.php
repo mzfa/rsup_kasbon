@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use App\Exports\PembayaranExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PembayaranController extends Controller
 {
@@ -20,6 +22,11 @@ class PembayaranController extends Controller
             'transaksi.*',
         ])->whereNull('transaksi.deleted_at')->whereNotNull('no_spb')->get();
         return view('pembayaran.index', compact('data'));
+    }
+    public function export_excel()
+    {
+        $nama_file = 'Laporan_Pembayaran_'.date('Y-m-d_H-i-s').'.xlsx';
+        return Excel::download(new PembayaranExport, $nama_file);
     }
     
 }
