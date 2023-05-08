@@ -8,7 +8,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Semua Transaksi Kas Keluar &nbsp; <button type="button" class="btn btn-primary"
+                            <h4 class="card-title">Semua Transaksi Kas Masuk &nbsp; <button type="button" class="btn btn-primary"
                                     data-toggle="modal" data-target="#exampleModal">Tambah</button></h4>
                         </div>
                     </div>
@@ -30,7 +30,7 @@
                                 <tbody>
                                     @foreach ($data as $item)
                                         <tr>
-                                            <td>{{ $item->no_transaksi }}</td>
+                                            <td>{{ $item->no_transaksi_kas_masuk }}</td>
                                             <td>{{ date('d-m-Y', strtotime($item->created_at)) }} / {{ $item->username }}</td>
                                             <td>{{ $item->uraian }}</td>
                                             <td>{{ $item->no_spb }}</td>
@@ -40,11 +40,11 @@
                                                 <span class="badge badge-primary">{{ $item->pj }}</span> 
                                             </td>
                                             <td>
-                                                <a onclick="return edit({{ $item->transaksi_id }})"
+                                                <a onclick="return edit({{ $item->transaksi_kas_masuk_id }})"
                                                     class="btn text-white btn-info">Ubah</a>
-                                                <a onclick="return confirm('Apakah anda yakin ini dihapus?')" href="{{ url('transaksi/delete/' . Crypt::encrypt($item->transaksi_id)) }}"
+                                                <a onclick="return confirm('Apakah anda yakin ini dihapus?')" href="{{ url('transaksi_kas_masuk/delete/' . Crypt::encrypt($item->transaksi_kas_masuk_id)) }}"
                                                     class="btn text-white btn-danger">Hapus</a>
-                                                <a onclick="return confirm('Apakah anda yakin print ini?')" target="_blank" href="{{ url('transaksi/print/' . Crypt::encrypt($item->transaksi_id)) }}"
+                                                <a onclick="return confirm('Apakah anda yakin print ini?')" target="_blank" href="{{ url('transaksi_kas_masuk/print/' . Crypt::encrypt($item->transaksi_kas_masuk_id)) }}"
                                                     class="btn text-white btn-primary">Print</a>
                                             </td>
                                         </tr>
@@ -62,7 +62,7 @@
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <form class="needs-validation was-validated" action="{{ url('transaksi/store') }}" method="POST" nonvalidate>
+            <form class="needs-validation was-validated" action="{{ url('transaksi_kas_masuk/store') }}" method="POST" nonvalidate>
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
@@ -122,7 +122,7 @@
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <form class="needs-validation was-validated" action="{{ url('transaksi/update') }}" method="POST" nonvalidate>
+            <form class="needs-validation was-validated" action="{{ url('transaksi_kas_masuk/update') }}" method="POST" nonvalidate>
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
@@ -149,7 +149,7 @@
         function edit(id) {
             $.ajax({
                 type: 'get',
-                url: "{{ url('transaksi/edit') }}/" + id,
+                url: "{{ url('transaksi_kas_masuk/edit') }}/" + id,
                 // data:{'id':id}, 
                 success: function(tampil) {
 

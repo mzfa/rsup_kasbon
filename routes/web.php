@@ -7,8 +7,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ListAkunController;
 use App\Http\Controllers\PesanController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\TransaksiKasMasukController;
 use App\Http\Controllers\KasbonController;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\LaporanKasMasukController;
 use App\Http\Controllers\TestPesanController;
 use App\Imports\PesanImport;
 use Illuminate\Http\Request;
@@ -100,6 +102,14 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/transaksi/store', 'store');
         Route::post('/transaksi/update', 'update');
     });
+    Route::controller(TransaksiKasMasukController::class)->middleware('cek_login:transaksi_kas_masuk.index')->group(function () {
+        Route::get('/transaksi_kas_masuk', 'index')->name('transaksi_kas_masuk.index');
+        Route::get('/transaksi_kas_masuk/edit/{id}', 'edit');
+        Route::get('/transaksi_kas_masuk/delete/{id}', 'delete');
+        Route::get('/transaksi_kas_masuk/print/{id}', 'print');
+        Route::post('/transaksi_kas_masuk/store', 'store');
+        Route::post('/transaksi_kas_masuk/update', 'update');
+    });
     Route::controller(KasbonController::class)->middleware('cek_login:kasbon.index')->group(function () {
         Route::get('/kasbon/index', 'index')->name('kasbon.index');
         Route::get('/kasbon/export_excel', 'export_excel');
@@ -107,6 +117,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::controller(PembayaranController::class)->middleware('cek_login:pembayaran.index')->group(function () {
         Route::get('/pembayaran/index', 'index')->name('pembayaran.index');
         Route::get('/pembayaran/export_excel', 'export_excel');
+    });
+    Route::controller(LaporanKasMasukController::class)->middleware('cek_login:laporan_kas_masuk.index')->group(function () {
+        Route::get('/laporan_kas_masuk/index', 'index')->name('laporan_kas_masuk.index');
+        Route::get('/laporan_kas_masuk/export_excel', 'export_excel');
     });
     // Route::get('/tes_pesan', 'index')->name('tes_pesan.index');
     Route::get('/tes_pesan', [\App\Http\Controllers\TestPesanController::class, 'index'])->name('tes_pesan.index');
