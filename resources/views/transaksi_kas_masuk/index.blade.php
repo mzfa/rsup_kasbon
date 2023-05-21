@@ -20,10 +20,10 @@
                                         <th>#</th>
                                         <th>Tanggal/Dibuat Oleh</th>
                                         <th>Uraian</th>
-                                        <th>No SPB</th>
                                         <th>Nominal</th>
+                                        <th>Diterima</th>
                                         <th>Keterangan</th>
-                                        <th>PJ</th>
+                                        <th>Jenis Pembayaran</th>
                                         <th>#</th>
                                     </tr>
                                 </thead>
@@ -33,11 +33,30 @@
                                             <td>{{ $item->no_transaksi_kas_masuk }}</td>
                                             <td>{{ date('d-m-Y', strtotime($item->created_at)) }} / {{ $item->username }}</td>
                                             <td>{{ $item->uraian }}</td>
-                                            <td>{{ $item->no_spb }}</td>
                                             <td>Rp. {{ number_format($item->nominal) }}</td>
-                                            <td>@if($item->keterangan == "SPB") <span class="badge badge-primary">SPB</span> @else <span class="badge badge-danger">NON SPB / KASBON</span> @endif</td>
+                                            <td>{{ $item->diterima }}</td>
+                                            <td><span class="badge badge-danger">{{ $item->keterangan }}</span></td>
                                             <td>
-                                                <span class="badge badge-primary">{{ $item->pj }}</span> 
+                                                @php
+                                                    if(isset($item->jenis_pembayaran_id)){
+                                                        $pembayaran_id = explode('|',$item->jenis_pembayaran_id);
+                                                        $jumSub = count($pembayaran_id);
+                                                        $hasil = '';
+                                                        for ($i=0; $i<=$jumSub-1; $i++)
+                                                        {
+                                                            $data1 = DB::table('jenis_pembayaran')->where('jenis_pembayaran_id',$pembayaran_id[$i])->first();
+                                                            if(isset($data1)){
+                                                                $hasil .= $data1->nama_jenis_pembayaran. ', ';
+
+                                                            }
+                                                            // dump( );
+                                                        }
+                                                        echo $hasil;
+                                                    }else{
+                                                        echo "-";
+                                                    }
+
+                                                @endphp
                                             </td>
                                             <td>
                                                 <a onclick="return edit({{ $item->transaksi_kas_masuk_id }})"
@@ -73,43 +92,53 @@
                     </div>
                     <div class="modal-body">
                         <div class="mb-3 row">
+                            <label for="staticEmail" class="col-sm-12 col-form-label">Diterima Dari</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="diterima" name="diterima" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
                             <label for="staticEmail" class="col-sm-12 col-form-label">Uraian</label>
                             <div class="col-sm-12">
                                 <input type="text" class="form-control" id="uraian" name="uraian" required>
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label for="staticEmail" class="col-sm-12 col-form-label">No SPB</label>
+                            <label for="staticEmail" class="col-sm-12 col-form-label">Tunai</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="no_spb" name="no_spb">
+                                <input type="number" min="0" value="0" onkeyup="hitung(this)" class="form-control" id="tunai" name="tunai">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="staticEmail" class="col-sm-12 col-form-label">Debit/Kredit</label>
+                            <div class="col-sm-12">
+                                <input type="number" min="0" value="0" onkeyup="hitung(this)" class="form-control" id="debit" name="debit">
                             </div>
                         </div>
                         <div class="mb-3 row">
                             <label for="staticEmail" class="col-sm-12 col-form-label">Nominal</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="nominal" name="nominal" required>
+                                <input type="text" class="form-control" id="nominal" name="nominal" readonly>
+                            </div>
+                        </div>
+                        <input type="hidden" value="Yoesi Febriansyah, SE." class="form-control" id="pj" name="pj" required>
+                        <div class="mb-3 row">
+                            <label for="staticEmail" class="col-sm-12 col-form-label">Jenis Pembayaran</label>
+                            <div class="container">
+                                @foreach($jenis_pembayaran as $item)
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input type="checkbox" value="{{ $item->jenis_pembayaran_id }}" class="custom-control-input" name="jenis_pembayaran_id[]" id="customCheck{{ $loop->iteration }}">
+                                    <label class="custom-control-label" for="customCheck{{ $loop->iteration }}">{{ $item->nama_jenis_pembayaran }}</label>
+                                </div>
+                                @endforeach
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label for="staticEmail" class="col-sm-12 col-form-label">Penerima</label>
+                            <label for="staticEmail" class="col-sm-12 col-form-label">Keterangan</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="diterima" name="diterima" required>
+                                <textarea name="keterangan" id="keterangan" cols="3" rows="3" class="form-control"></textarea>
                             </div>
                         </div>
-                        <div class="mb-3 row">
-                            <label for="staticEmail" class="col-sm-12 col-form-label">Penanggung Jawab</label>
-                            <div class="col-sm-12">
-                                <input type="text" value="Yoesi Febriansyah, SE." class="form-control" id="pj" name="pj" required>
-                            </div>
-                        </div>
-                        {{-- <div class="input-group mb-4">
-                            <div class="input-group-prepend">
-                               <div class="input-group-text">
-                                  <input type="checkbox" value="spb" name="keterangan" aria-label="Text input with checkbox">
-                               </div>
-                            </div>
-                            &nbsp; Menggunakan SPB
-                         </div> --}}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -158,6 +187,12 @@
                     $('#editModal').modal('show');
                 }
             })
+        }
+
+        function hitung(e){
+            var tunai = parseInt($('#tunai').val());
+            var debit = parseInt($('#debit').val());
+            $('#nominal').val( tunai + debit);
         }
     </script>
 @endpush

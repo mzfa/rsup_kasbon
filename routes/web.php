@@ -5,7 +5,7 @@ use App\Http\Controllers\HakAksesController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ListAkunController;
-use App\Http\Controllers\PesanController;
+use App\Http\Controllers\JenisPembayaranController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\TransaksiKasMasukController;
 use App\Http\Controllers\KasbonController;
@@ -85,14 +85,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/list_akun/store', 'store');
         Route::post('/list_akun/update', 'update');
     });
-    Route::controller(PesanController::class)->middleware('cek_login:pesan.index')->group(function () {
-        Route::get('/pesan', 'index')->name('pesan.index');
-        Route::get('/pesan/edit/{id}', 'edit');
-        Route::get('/pesan/delete/{id}', 'delete');
-        Route::get('/pesan/modul_akses/{id}', 'modul_akses');
-        Route::post('/pesan/modul_akses', 'modul_akses_store');
-        Route::post('/pesan/store', 'store');
-        Route::post('/pesan/update', 'update');
+    Route::controller(JenisPembayaranController::class)->middleware('cek_login:jenis_pembayaran.index')->group(function () {
+        Route::get('/jenis_pembayaran', 'index')->name('jenis_pembayaran.index');
+        Route::get('/jenis_pembayaran/edit/{id}', 'edit');
+        Route::get('/jenis_pembayaran/delete/{id}', 'delete');
+        Route::post('/jenis_pembayaran/store', 'store');
+        Route::post('/jenis_pembayaran/update', 'update');
     });
     Route::controller(TransaksiController::class)->middleware('cek_login:transaksi.index')->group(function () {
         Route::get('/transaksi', 'index')->name('transaksi.index');

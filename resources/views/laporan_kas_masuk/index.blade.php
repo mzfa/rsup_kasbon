@@ -19,10 +19,9 @@
                                         <th>#</th>
                                         <th>Tanggal/Dibuat Oleh</th>
                                         <th>Uraian</th>
-                                        <th>No SPB</th>
                                         <th>Nominal</th>
                                         <th>Keterangan</th>
-                                        <th>PJ</th>
+                                        <th>Metode Pembayaran</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -31,11 +30,29 @@
                                             <td>{{ $item->no_transaksi_kas_masuk }}</td>
                                             <td>{{ date('d-m-Y', strtotime($item->created_at)) }} / {{ $item->username }}</td>
                                             <td>{{ $item->uraian }}</td>
-                                            <td>{{ $item->no_spb }}</td>
                                             <td>Rp. {{ number_format($item->nominal) }}</td>
-                                            <td>@if($item->keterangan == "SPB") <span class="badge badge-primary">SPB</span> @else <span class="badge badge-danger">NON SPB</span> @endif</td>
+                                            <td><span class="badge badge-danger">{{ $item->keterangan }}</span></td>
                                             <td>
-                                                <span class="badge badge-primary">{{ $item->pj }}</span> 
+                                                @php
+                                                    if(isset($item->jenis_pembayaran_id)){
+                                                        $pembayaran_id = explode('|',$item->jenis_pembayaran_id);
+                                                        $jumSub = count($pembayaran_id);
+                                                        $hasil = '';
+                                                        for ($i=0; $i<=$jumSub-1; $i++)
+                                                        {
+                                                            $data1 = DB::table('jenis_pembayaran')->where('jenis_pembayaran_id',$pembayaran_id[$i])->first();
+                                                            if(isset($data1)){
+                                                                $hasil .= $data1->nama_jenis_pembayaran. ', ';
+
+                                                            }
+                                                            // dump( );
+                                                        }
+                                                        echo $hasil;
+                                                    }else{
+                                                        echo "-";
+                                                    }
+
+                                                @endphp
                                             </td>
                                         </tr>
                                     @endforeach

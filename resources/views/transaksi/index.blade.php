@@ -23,7 +23,7 @@
                                         <th>No SPB</th>
                                         <th>Nominal</th>
                                         <th>Keterangan</th>
-                                        <th>PJ</th>
+                                        <th>Jenis Pembayaran</th>
                                         <th>#</th>
                                     </tr>
                                 </thead>
@@ -35,10 +35,29 @@
                                             <td>{{ $item->uraian }}</td>
                                             <td>{{ $item->no_spb }}</td>
                                             <td>Rp. {{ number_format($item->nominal) }}</td>
-                                            <td>@if($item->keterangan == "SPB") <span class="badge badge-primary">SPB</span> @else <span class="badge badge-danger">NON SPB / KASBON</span> @endif</td>
                                             <td>
-                                                <span class="badge badge-primary">{{ $item->pj }}</span> 
+                                                @php
+                                                    if(isset($item->jenis_pembayaran_id)){
+                                                        $pembayaran_id = explode('|',$item->jenis_pembayaran_id);
+                                                        $jumSub = count($pembayaran_id);
+                                                        $hasil = '';
+                                                        for ($i=0; $i<=$jumSub-1; $i++)
+                                                        {
+                                                            $data1 = DB::table('jenis_pembayaran')->where('jenis_pembayaran_id',$pembayaran_id[$i])->first();
+                                                            if(isset($data1)){
+                                                                $hasil .= $data1->nama_jenis_pembayaran. ', ';
+
+                                                            }
+                                                            // dump( );
+                                                        }
+                                                        echo $hasil;
+                                                    }else{
+                                                        echo "-";
+                                                    }
+
+                                                @endphp
                                             </td>
+                                            <td>@if($item->keterangan == "SPB") <span class="badge badge-primary">SPB</span> @else <span class="badge badge-danger">NON SPB / KASBON</span> @endif</td>
                                             <td>
                                                 <a onclick="return edit({{ $item->transaksi_id }})"
                                                     class="btn text-white btn-info">Ubah</a>
@@ -100,6 +119,17 @@
                             <label for="staticEmail" class="col-sm-12 col-form-label">Penanggung Jawab</label>
                             <div class="col-sm-12">
                                 <input type="text" value="Yoesi Febriansyah, SE." class="form-control" id="pj" name="pj" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="staticEmail" class="col-sm-12 col-form-label">Jenis Pembayaran</label>
+                            <div class="container">
+                                @foreach($jenis_pembayaran as $item)
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input type="checkbox" value="{{ $item->jenis_pembayaran_id }}" class="custom-control-input" name="jenis_pembayaran_id[]" id="customCheck{{ $loop->iteration }}">
+                                    <label class="custom-control-label" for="customCheck{{ $loop->iteration }}">{{ $item->nama_jenis_pembayaran }}</label>
+                                </div>
+                                @endforeach
                             </div>
                         </div>
                         {{-- <div class="input-group mb-4">

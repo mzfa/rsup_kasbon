@@ -117,6 +117,32 @@
                 </td>
             </tr>
             <tr>
+                <td align="right">Jenis Pembayaran</td>
+                <td>:</td>
+                <td>
+                    <b>@php
+                        if(isset($data->jenis_pembayaran_id)){
+                            $pembayaran_id = explode('|',$data->jenis_pembayaran_id);
+                            $jumSub = count($pembayaran_id);
+                            $hasil = '';
+                            for ($i=0; $i<=$jumSub-1; $i++)
+                            {
+                                $data1 = DB::table('jenis_pembayaran')->where('jenis_pembayaran_id',$pembayaran_id[$i])->first();
+                                if(isset($data1)){
+                                    $hasil .= $data1->nama_jenis_pembayaran. ', ';
+
+                                }
+                                // dump( );
+                            }
+                            echo $hasil;
+                        }else{
+                            echo "-";
+                        }
+
+                    @endphp</b>
+                </td>
+            </tr>
+            <tr>
                 <td align="right">TERBILANG</td>
                 <td>:</td>
                 <td><b>## <i> {{ $terbilang }} </i> ##</b></td>

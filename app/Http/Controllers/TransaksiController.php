@@ -19,7 +19,8 @@ class TransaksiController extends Controller
             'users.username',
             'transaksi.*',
         ])->whereNull('transaksi.deleted_at')->get();
-        return view('transaksi.index', compact('data'));
+        $jenis_pembayaran = DB::table('jenis_pembayaran')->whereNull('jenis_pembayaran.deleted_at')->get();
+        return view('transaksi.index', compact('data','jenis_pembayaran'));
     }
 
     public function store(Request $request){
@@ -27,7 +28,9 @@ class TransaksiController extends Controller
         // $request->validate([
         //     'nama_transaksi' => ['required', 'string'],
         // ]);
-        $no_urut = DB::table('transaksi')->max('no_transaksi');
+        $periode = '%'.date('m')."/".date('Y').'%';
+        $no_urut = DB::table('transaksi')->where('no_transaksi','like',$periode)->max('no_transaksi');
+        // dump($no_urut);
         $urutan = (int) substr($no_urut,0,3);
         $urutan++;
         $bt = substr($no_urut,-7);
@@ -36,10 +39,18 @@ class TransaksiController extends Controller
         }
         $huruf = "/KK/".date('m')."/".date('Y');
         $no_transaksi = sprintf("%03s",$urutan).$huruf;
+        // dd($no_transaksi);
         $keterangan = '';
         if($request->no_spb){
             $keterangan = 'SPB';
         }
+        $jenis_pembayaran = '|';
+        foreach($request->jenis_pembayaran_id as $item){
+            $jenis_pembayaran .= $item.'|';
+        }
+
+        // dd($jenis_pembayaran);
+
         // dd($urutan);
         // $no_transaksi = 1;
         $data = [
@@ -49,6 +60,7 @@ class TransaksiController extends Controller
             'keterangan' => $keterangan,
             'nominal' => $request->nominal,
             'diterima' => $request->diterima,
+            'jenis_pembayaran_id' => $jenis_pembayaran,
             'pj' => $request->pj,
             'created_by' => Auth::user()->id,
             'created_at' => now(),

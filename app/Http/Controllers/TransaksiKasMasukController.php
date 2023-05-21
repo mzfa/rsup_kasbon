@@ -19,7 +19,8 @@ class TransaksiKasMasukController extends Controller
             'users.username',
             'transaksi_kas_masuk.*',
         ])->whereNull('transaksi_kas_masuk.deleted_at')->get();
-        return view('transaksi_kas_masuk.index', compact('data'));
+        $jenis_pembayaran = DB::table('jenis_pembayaran')->whereNull('jenis_pembayaran.deleted_at')->get();
+        return view('transaksi_kas_masuk.index', compact('data','jenis_pembayaran'));
     }
 
     public function store(Request $request){
@@ -27,7 +28,9 @@ class TransaksiKasMasukController extends Controller
         // $request->validate([
         //     'nama_transaksi_kas_masuk' => ['required', 'string'],
         // ]);
-        $no_urut = DB::table('transaksi_kas_masuk')->max('no_transaksi_kas_masuk');
+        $periode = '%'.date('m')."/".date('Y').'%';
+        $no_urut = DB::table('transaksi_kas_masuk')->where('no_transaksi_kas_masuk','like',$periode)->max('no_transaksi_kas_masuk');
+        // dump($no_urut);
         $urutan = (int) substr($no_urut,0,3);
         $urutan++;
         $bt = substr($no_urut,-7);
@@ -36,20 +39,21 @@ class TransaksiKasMasukController extends Controller
         }
         $huruf = "/KM/".date('m')."/".date('Y');
         $no_transaksi_kas_masuk = sprintf("%03s",$urutan).$huruf;
-        $keterangan = '';
-        if($request->no_spb){
-            $keterangan = 'SPB';
+        $keterangan = $request->keterangan;
+        $jenis_pembayaran = '|';
+        foreach($request->jenis_pembayaran_id as $item){
+            $jenis_pembayaran .= $item.'|';
         }
-        // dd($urutan);
-        // $no_transaksi_kas_masuk = 1;
         $data = [
             'no_transaksi_kas_masuk' => $no_transaksi_kas_masuk,
             'uraian' => $request->uraian,
-            'no_spb' => $request->no_spb,
             'keterangan' => $keterangan,
-            'nominal' => $request->nominal,
+            'nominal' => $request->tunai + $request->debit,
+            'tunai' => $request->tunai,
+            'debit' => $request->debit,
             'diterima' => $request->diterima,
             'pj' => $request->pj,
+            'jenis_pembayaran_id' => $jenis_pembayaran,
             'created_by' => Auth::user()->id,
             'created_at' => now(),
         ];
@@ -69,12 +73,6 @@ class TransaksiKasMasukController extends Controller
                     '<label for="staticEmail" class="col-sm-2 col-form-label">Uraian</label>'.
                     '<div class="col-sm-10">'.
                     '<input type="text" class="form-control" id="uraian" name="uraian" value="'.$data->uraian.'" required>'.
-                    '</div>'.
-                '</div>'.
-                '<div class="mb-3 row">'.
-                    '<label for="staticEmail" class="col-sm-2 col-form-label">No SPB</label>'.
-                    '<div class="col-sm-10">'.
-                    '<input type="text" class="form-control" id="no_spb" name="no_spb" value="'.$data->no_spb.'">'.
                     '</div>'.
                 '</div>'.
                 '<div class="mb-3 row">'.
@@ -110,7 +108,7 @@ class TransaksiKasMasukController extends Controller
         // $no_transaksi_kas_masuk = 1;
         $data = [
             'uraian' => $request->uraian,
-            'no_spb' => $request->no_spb,
+            // 'no_spb' => $request->no_spb,
             // 'keterangan' => $keterangan,
             // 'nominal' => $request->nominal,
             'diterima' => $request->diterima,

@@ -8,27 +8,29 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">List Tamplate Pesan &nbsp; <button type="button" class="btn btn-primary"
-                                    data-toggle="modal" data-target="#exampleModal">Tambah Tamplate</button></h4>
+                            <h4 class="card-title">Jenis Pembayaran &nbsp; <button type="button" class="btn btn-primary"
+                                    data-toggle="modal" data-target="#exampleModal">Tambah</button></h4>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped">
+                            <table id="datatable" class="table data-table table-striped">
                                 <thead>
                                     <tr class="ligth">
-                                        <th>Nama Tamplate</th>
+                                        <th>Nama Jenis Pembayaran</th>
+                                        <th>Keterangan</th>
                                         <th>#</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($data as $item)
                                         <tr>
-                                            <td>{{ $item->judul_pesan }}</td>
+                                            <td>{{ $item->nama_jenis_pembayaran }}</td>
+                                            <td>{{ $item->keterangan_jenis_pembayaran }}</td>
                                             <td>
-                                                <a onclick="return edit({{ $item->pesan_id }})"
+                                                <a onclick="return edit({{ $item->jenis_pembayaran_id }})"
                                                     class="btn text-white btn-info">Ubah</a>
-                                                <a href="{{ url('pesan/delete/' . Crypt::encrypt($item->pesan_id)) }}"
+                                                <a onclick="return confirm('Apakah anda yakin ini dihapus?')" href="{{ url('jenis_pembayaran/delete/' . Crypt::encrypt($item->jenis_pembayaran_id)) }}"
                                                     class="btn text-white btn-danger">Hapus</a>
                                             </td>
                                         </tr>
@@ -46,38 +48,43 @@
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <form action="{{ url('pesan/store') }}" method="post" enctype="multipart/form-data">
+            <form class="needs-validation was-validated" action="{{ url('jenis_pembayaran/store') }}" method="POST" nonvalidate>
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Tambah Data</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
+                            <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="staticEmail" class="form-label">Judul Pesan</label>
-                            <input type="text" class="form-control" id="judul_pesan" name="judul_pesan" required>
+                        <div class="mb-3 row">
+                            <label for="staticEmail" class="col-sm-2 col-form-label">Jenis Pembayaran</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="nama_jenis_pembayaran" name="nama_jenis_pembayaran" required>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="staticEmail" class="form-label">Isi Pesan</label>
-                            <textarea name="isi_pesan" class="form-control"  id="isi_pesan" cols="30" rows="10"></textarea>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3 row">
+                            <label for="staticEmail" class="col-sm-2 col-form-label">Keterangan</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="keterangan_jenis_pembayaran" name="keterangan_jenis_pembayaran" required>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <form class="needs-validation was-validated" action="{{ url('pesan/update') }}" method="POST" nonvalidate>
+            <form class="needs-validation was-validated" action="{{ url('jenis_pembayaran/update') }}" method="POST" nonvalidate>
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
@@ -104,7 +111,7 @@
         function edit(id) {
             $.ajax({
                 type: 'get',
-                url: "{{ url('pesan/edit') }}/" + id,
+                url: "{{ url('jenis_pembayaran/edit') }}/" + id,
                 // data:{'id':id}, 
                 success: function(tampil) {
 

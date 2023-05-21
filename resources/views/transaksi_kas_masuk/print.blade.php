@@ -85,7 +85,14 @@
             <tr>
                 <td align="right"><p>TUNAI DITERIMA</p></td>
                 <td><p>:</p></td>
-                <td align="left"><b>Rp. {{ number_format($data->nominal) }}</b></td>
+                <td align="left"><b>Rp. {{ number_format($data->tunai) }}</b></td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td align="right"><p>DEBIT/KREDIT</p></td>
+                <td><p>:</p></td>
+                <td align="left"><b>Rp. {{ number_format($data->debit) }}</b></td>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td>&nbsp;</td>
             </tr>
@@ -99,7 +106,32 @@
                 <td>:</td>
                 <td><b>{{ $data->uraian }}</b></td>
             </tr>
-            
+            <tr>
+                <td align="right">Jenis Pembayaran</td>
+                <td>:</td>
+                <td>
+                    <b>@php
+                        if(isset($data->jenis_pembayaran_id)){
+                            $pembayaran_id = explode('|',$data->jenis_pembayaran_id);
+                            $jumSub = count($pembayaran_id);
+                            $hasil = '';
+                            for ($i=0; $i<=$jumSub-1; $i++)
+                            {
+                                $data1 = DB::table('jenis_pembayaran')->where('jenis_pembayaran_id',$pembayaran_id[$i])->first();
+                                if(isset($data1)){
+                                    $hasil .= $data1->nama_jenis_pembayaran. ', ';
+
+                                }
+                                // dump( );
+                            }
+                            echo $hasil;
+                        }else{
+                            echo "-";
+                        }
+
+                    @endphp</b>
+                </td>
+            </tr>
             {{-- <tr>
                 <td align="right">PENANGGUNG JWB KAS</td>
                 <td>:</td>
@@ -109,11 +141,7 @@
                 <td align="right">KETERANGAN</td>
                 <td>:</td>
                 <td>
-                    <b>@if($data->keterangan == "SPB")
-                        {{ $data->no_spb }}
-                        @else
-                            Non SPB / KASBON
-                        @endif</b>
+                    <b>{{ $data->keterangan }}</b>
                 </td>
             </tr>
             <tr>
