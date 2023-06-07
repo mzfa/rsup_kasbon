@@ -11,7 +11,9 @@ use App\Http\Controllers\TransaksiKasMasukController;
 use App\Http\Controllers\KasbonController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\LaporanKasMasukController;
+use App\Http\Controllers\LaporanJenisPembayaranController;
 use App\Http\Controllers\TestPesanController;
+use App\Http\Controllers\SaldoController;
 use App\Imports\PesanImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -116,9 +118,19 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/pembayaran/index', 'index')->name('pembayaran.index');
         Route::get('/pembayaran/export_excel', 'export_excel');
     });
+    Route::controller(SaldoController::class)->middleware('cek_login:saldo.index')->group(function () {
+        Route::get('/saldo/index', 'index')->name('saldo.index');
+        Route::get('/saldo/export_excel', 'export_excel');
+        Route::post('/saldo/detail', 'detail');
+    });
     Route::controller(LaporanKasMasukController::class)->middleware('cek_login:laporan_kas_masuk.index')->group(function () {
         Route::get('/laporan_kas_masuk/index', 'index')->name('laporan_kas_masuk.index');
         Route::get('/laporan_kas_masuk/export_excel', 'export_excel');
+    });
+    Route::controller(LaporanJenisPembayaranController::class)->middleware('cek_login:laporan_jenis_pembayaran.index')->group(function () {
+        Route::get('/laporan_jenis_pembayaran/index', 'index')->name('laporan_jenis_pembayaran.index');
+        Route::get('/laporan_jenis_pembayaran/export_excel', 'export_excel');
+        Route::post('/laporan_jenis_pembayaran/detail', 'detail');
     });
     // Route::get('/tes_pesan', 'index')->name('tes_pesan.index');
     Route::get('/tes_pesan', [\App\Http\Controllers\TestPesanController::class, 'index'])->name('tes_pesan.index');
