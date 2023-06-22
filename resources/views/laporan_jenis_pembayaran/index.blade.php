@@ -8,7 +8,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Rekapitulasi Jenis Pembayaran &nbsp; <a href="{{ url('laporan_jenis_pembayaran/cetak') }}" class="btn btn-primary">Excel</a></h4>
+                            <h4 class="card-title">Rekapitulasi Jenis Pembayaran &nbsp; </h4>
                         </div>
                     </div>
                     <div class="card-body">
@@ -45,9 +45,10 @@
                         <br>
                         @isset($tanggal_awal)
                             <h2 class="text-center">Periode : {{ $tanggal_awal }} - {{ $tanggal_akhir }}</h2>
+                            <a href="{{ url('laporan_jenis_pembayaran/export_excel/'.$jenis_pembayaran_id.'/'.$tanggal_awal.'/'.$tanggal_akhir.'/'.$pemid) }}" class="btn btn-primary w-100">Excel</a><br>
                         @endisset
                         @if(!empty($data[0]) || !empty($data1[0]))
-                        <div class="table-responsive">
+                        <div class="table-responsive mt-3">
                             <table id="datatable" class="table data-table table-striped">
                                 <thead>
                                     <tr class="ligth">
@@ -55,6 +56,7 @@
                                         <th>Uraian</th>
                                         <th>Tanggal/Dibuat Oleh</th>
                                         <th>Nominal</th>
+                                        <th>Jenis Kas</th>
                                         <th>Keterangan</th>
                                     </tr>
                                 </thead>
@@ -65,6 +67,7 @@
                                             <td>{{ $item->uraian }}</td>
                                             <td>{{ date('d-m-Y', strtotime($item->created_at)) }} / {{ $item->username }}</td>
                                             <td>Rp. {{ number_format($item->nominal) }}</td>
+                                            <td>Kas Masuk</td>
                                             <td><span class="badge badge-danger">{{ $item->keterangan }}</span></td>
                                         </tr>
                                     @endforeach
@@ -74,6 +77,7 @@
                                             <td>{{ $item->uraian }}</td>
                                             <td>{{ date('d-m-Y', strtotime($item->created_at)) }} / {{ $item->username }}</td>
                                             <td>Rp. {{ number_format($item->nominal) }}</td>
+                                            <td>Kas Keluar</td>
                                             <td><span class="badge badge-danger">{{ $item->keterangan }}</span></td>
                                         </tr>
                                     @endforeach

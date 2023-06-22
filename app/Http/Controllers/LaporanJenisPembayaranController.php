@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
-use App\Exports\LaporanKasMasukExport;
+use App\Exports\LaporanJenisPembayaran;
 use Maatwebsite\Excel\Facades\Excel;
 
 class LaporanJenisPembayaranController extends Controller
@@ -44,12 +44,12 @@ class LaporanJenisPembayaranController extends Controller
         ->get();
         // dd($jenis_pembayaran_id,$data);
         $jenis_pembayaran = DB::table('jenis_pembayaran')->whereNull('jenis_pembayaran.deleted_at')->get();
-        return view('laporan_jenis_pembayaran.index', compact('data','data2','jenis_pembayaran','tanggal_awal','tanggal_akhir','pemid'));
+        return view('laporan_jenis_pembayaran.index', compact('data','data2','jenis_pembayaran','tanggal_awal','tanggal_akhir','pemid','jenis_pembayaran_id'));
     }
-    public function export_excel()
+    public function export_excel($jenis_pembayaran_id, $tanggal_awal, $tanggal_akhir, $pemid)
     {
         $nama_file = 'Laporan_Kas_Masuk_'.date('Y-m-d_H-i-s').'.xlsx';
-        return Excel::download(new LaporanKasMasukExport, $nama_file);
+        return Excel::download(new LaporanJenisPembayaran($jenis_pembayaran_id, $tanggal_awal, $tanggal_akhir, $pemid), $nama_file);
     }
     
 }

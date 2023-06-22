@@ -129,7 +129,7 @@ Route::group(['middleware' => ['auth']], function () {
     });
     Route::controller(LaporanJenisPembayaranController::class)->middleware('cek_login:laporan_jenis_pembayaran.index')->group(function () {
         Route::get('/laporan_jenis_pembayaran/index', 'index')->name('laporan_jenis_pembayaran.index');
-        Route::get('/laporan_jenis_pembayaran/export_excel', 'export_excel');
+        Route::get('/laporan_jenis_pembayaran/export_excel/{jenis_pembayaran_id}/{tanggal_awal}/{tanggal_akhir}/{pemid}','export_excel');
         Route::post('/laporan_jenis_pembayaran/detail', 'detail');
     });
     // Route::get('/tes_pesan', 'index')->name('tes_pesan.index');
