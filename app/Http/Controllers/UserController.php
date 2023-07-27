@@ -64,11 +64,12 @@ class UserController extends Controller
                 'pegawai_id' => $item->pegawai_id,
             ];
         }
-        // dd($datanya);
-
+        
         DB::table('users')->truncate();
         DB::table('users')->insert($datanya);
-        return Redirect::back()->with('message', ['success', 'Data berhasil disimpan']);
+        // dd($datanya);
+        // return Redirect::back()->with('message', ['success', 'Data berhasil disimpan']);
+        return Redirect::back()->with(['success' => 'Data Berhasil Di Update!']);
 
         // return redirect()->back()->with('status', ['success', 'Data berhasil disimpan']);
     }

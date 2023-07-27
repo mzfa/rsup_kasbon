@@ -8,8 +8,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Hakakses &nbsp; <button type="button" class="btn btn-primary"
-                                    data-toggle="modal" data-target="#exampleModal">Tambah</button></h4>
+                            <h4 class="card-title">User &nbsp; <a class="btn btn-primary" href="{{ url('user/sync') }}">Sync</a></h4>
                         </div>
                     </div>
                     <div class="card-body">
