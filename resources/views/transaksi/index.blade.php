@@ -14,10 +14,11 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="datatable" class="table data-table table-striped">
+                            <table id="datatable" class="table data-table table-striped nowrap">
                                 <thead>
                                     <tr class="ligth">
                                         <th>#</th>
+                                        <th>No Transaksi</th>
                                         <th>Tanggal/Dibuat Oleh</th>
                                         <th>Uraian</th>
                                         <th>No SPB</th>
@@ -28,8 +29,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                        $no = 1;
+                                    @endphp
                                     @foreach ($data as $item)
                                         <tr>
+                                            <td>{{ $no++ }}</td>
                                             <td>{{ $item->no_transaksi }}</td>
                                             <td>{{ date('d-m-Y', strtotime($item->created_at)) }} / {{ $item->username }}</td>
                                             <td>{{ $item->uraian }}</td>

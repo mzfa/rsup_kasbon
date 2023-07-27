@@ -18,7 +18,8 @@ class TransaksiController extends Controller
         ->select([
             'users.username',
             'transaksi.*',
-        ])->whereNull('transaksi.deleted_at')->get();
+        ])->whereNull('transaksi.deleted_at')
+        ->orderBy('transaksi.created_at', 'desc')->get();
         $jenis_pembayaran = DB::table('jenis_pembayaran')->whereNull('jenis_pembayaran.deleted_at')->get();
         return view('transaksi.index', compact('data','jenis_pembayaran'));
     }
@@ -65,9 +66,10 @@ class TransaksiController extends Controller
             'created_by' => Auth::user()->id,
             'created_at' => now(),
         ];
-        DB::table('transaksi')->insert($data);
-
-        return Redirect::back()->with(['success' => 'Data Berhasil Di Simpan!']);
+        $last_id = DB::table('transaksi')->insertGetId($data);
+        // dd($last_id);
+        return redirect('transaksi/print/'.Crypt::encrypt($last_id))->with(['success' => 'Data Berhasil Di Simpan!']);
+        // return Redirect::back()->with(['success' => 'Data Berhasil Di Simpan!']);
     }
 
     public function edit($id)

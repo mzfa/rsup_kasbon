@@ -18,6 +18,7 @@
                                 <thead>
                                     <tr class="ligth">
                                         <th>#</th>
+                                        <th>No Transaksi</th>
                                         <th>Tanggal/Dibuat Oleh</th>
                                         <th>Uraian</th>
                                         <th>Nominal</th>
@@ -28,8 +29,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                        $no = 1;
+                                    @endphp
                                     @foreach ($data as $item)
                                         <tr>
+                                            <td>{{ $no++ }}</td>
                                             <td>{{ $item->no_transaksi_kas_masuk }}</td>
                                             <td>{{ date('d-m-Y', strtotime($item->created_at)) }} / {{ $item->username }}</td>
                                             <td>{{ $item->uraian }}</td>

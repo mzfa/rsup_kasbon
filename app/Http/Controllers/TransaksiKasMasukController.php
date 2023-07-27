@@ -57,9 +57,12 @@ class TransaksiKasMasukController extends Controller
             'created_by' => Auth::user()->id,
             'created_at' => now(),
         ];
-        DB::table('transaksi_kas_masuk')->insert($data);
+        // DB::table('transaksi_kas_masuk')->insert($data);
+        $last_id = DB::table('transaksi_kas_masuk')->insertGetId($data);
+        // dd($last_id);
+        return redirect('transaksi_kas_masuk/print/'.Crypt::encrypt($last_id))->with(['success' => 'Data Berhasil Di Simpan!']);
 
-        return Redirect::back()->with(['success' => 'Data Berhasil Di Simpan!']);
+        // return Redirect::back()->with(['success' => 'Data Berhasil Di Simpan!']);
     }
 
     public function edit($id)

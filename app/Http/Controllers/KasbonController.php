@@ -20,7 +20,9 @@ class KasbonController extends Controller
         ->select([
             'users.username',
             'transaksi.*',
-        ])->whereNull('transaksi.deleted_at')->whereNull('no_spb')->get();
+        ])->whereNull('transaksi.deleted_at')
+        ->orderBy('transaksi.created_at', 'desc')
+        ->whereNull('no_spb')->get();
         return view('kasbon.index', compact('data'));
     }
     public function export_excel()
