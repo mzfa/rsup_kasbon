@@ -14,14 +14,27 @@
                         </div>
                     </div>
                 </div>
+                @foreach($saldo as $item)
                 <div class="col-md-6 col-lg-3">
                     <div class="card card-block card-stretch card-height">
                         <div class="card-body">
                             <div class="top-block d-flex align-items-center justify-content-between">
-                                <h5>Projek</h5>
-                                <span class="badge badge-primary">Monthly</span>
+                                <h5>{{ $item['jenis_pembayaran'] }}</h5>
+                                {{-- <span class="badge badge-primary">Monthly</span> --}}
                             </div>
-                            <h3><span class="counter">35000</span></h3>
+                            <h3>Rp. <span class="counter">{{ number_format($item['total']) }}</span></h3>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+                <div class="col-md-6 col-lg-3">
+                    <div class="card card-block card-stretch card-height">
+                        <div class="card-body">
+                            <div class="top-block d-flex align-items-center justify-content-between">
+                                <h5>Total Pendapatan</h5>
+                                <span class="badge badge-warning">Bulan Ini</span>
+                            </div>
+                            <h3>Rp. <span class="counter">{{ number_format($pendapatan_bulan_ini) }}</span></h3>
                         </div>
                     </div>
                 </div>
@@ -29,10 +42,10 @@
                     <div class="card card-block card-stretch card-height">
                         <div class="card-body">
                             <div class="top-block d-flex align-items-center justify-content-between">
-                                <h5>User</h5>
-                                <span class="badge badge-warning">Anual</span>
+                                <h5>Total Pendapatan</h5>
+                                <span class="badge badge-success">Hari Ini</span>
                             </div>
-                            <h3><span class="counter">25100</span></h3>
+                            <h3>Rp. <span class="counter">{{ number_format($pendapatan_hari_ini) }}</span></h3>
                         </div>
                     </div>
                 </div>
@@ -40,10 +53,10 @@
                     <div class="card card-block card-stretch card-height">
                         <div class="card-body">
                             <div class="top-block d-flex align-items-center justify-content-between">
-                                <h5>Task</h5>
-                                <span class="badge badge-success">Today</span>
+                                <h5>Total Pengeluaran</h5>
+                                <span class="badge badge-info">Bulan Ini</span>
                             </div>
-                            <h3><span class="counter">33000</span></h3>
+                            <h3>Rp. <span class="counter">{{ number_format($pengeluaran_bulan_ini) }}</span></h3>
                         </div>
                     </div>
                 </div>
@@ -51,10 +64,10 @@
                     <div class="card card-block card-stretch card-height">
                         <div class="card-body">
                             <div class="top-block d-flex align-items-center justify-content-between">
-                                <h5>Profit</h5>
-                                <span class="badge badge-info">Weekly</span>
+                                <h5>Total Pengeluaran</h5>
+                                <span class="badge badge-info">Hari Ini</span>
                             </div>
-                            <h3>$<span class="counter">2500</span></h3>
+                            <h3>Rp. <span class="counter">{{ number_format($pengeluaran_hari_ini) }}</span></h3>
                         </div>
                     </div>
                 </div>
