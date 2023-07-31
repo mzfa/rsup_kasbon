@@ -8,7 +8,8 @@
             <thead>
                 <tr>
                     <th>Nomor Transaksi</th>
-                    <th>Tanggal/Dibuat Oleh</th>
+                    <th>Tanggal</th>
+                    <th>Dibuat Oleh</th>
                     <th>Uraian</th>
                     <th>No Kwitansi</th>
                     <th>Tunai</th>
@@ -23,7 +24,8 @@
                 @foreach ($data as $item)
                     <tr>
                         <td>{{ $item->no_transaksi_kas_masuk }}</td>
-                        <td>{{ date('d-m-Y', strtotime($item->created_at)) }} / {{ $item->username }}</td>
+                        <td>{{ date('d-m-Y', strtotime($item->created_at)) }}</td>
+                        <td>{{ $item->username }}</td>
                         <td>{{ $item->uraian }}</td>
                         <td>{{ $item->no_kwitansi }}</td>
                         <td>{{ $item->tunai }}</td>
