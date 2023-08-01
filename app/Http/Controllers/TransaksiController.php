@@ -68,8 +68,8 @@ class TransaksiController extends Controller
         ];
         $last_id = DB::table('transaksi')->insertGetId($data);
         // dd($last_id);
-        return redirect('transaksi/print/'.Crypt::encrypt($last_id))->with(['success' => 'Data Berhasil Di Simpan!']);
-        // return Redirect::back()->with(['success' => 'Data Berhasil Di Simpan!']);
+        // return redirect('transaksi/print/'.Crypt::encrypt($last_id))->with(['success' => 'Data Berhasil Di Simpan!']);
+        return Redirect::back()->with(['success' => 'Data Berhasil Di Simpan!']);
     }
 
     public function edit($id)
