@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="generator" content="">
-    <title>Login - {{ env('APP_NAME')}}</title>
+    <title>Login - {{ env('APP_NAME_KASBON')}}</title>
 
     <!-- manifest meta -->
     <meta name="apple-mobile-web-app-capable" content="yes">

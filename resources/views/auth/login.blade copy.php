@@ -7,16 +7,16 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="generator" content="">
-    <title>Login - {{ env('APP_NAME') }}</title>
+    <title>Login - {{ env('APP_NAME_KASBON') }}</title>
 
     <!-- manifest meta -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="manifest" href="manifest.json" />
 
     <!-- Favicons -->
-    <link rel="apple-touch-icon" href="{{ asset(env('APP_LOGO')) }}" sizes="180x180">
-    <link rel="icon" href="{{ asset(env('APP_LOGO')) }}" sizes="32x32" type="image/png">
-    <link rel="icon" href="{{ asset(env('APP_LOGO')) }}" sizes="16x16" type="image/png">
+    <link rel="apple-touch-icon" href="{{ asset(env('APP_LOGO_KASBON')) }}" sizes="180x180">
+    <link rel="icon" href="{{ asset(env('APP_LOGO_KASBON')) }}" sizes="32x32" type="image/png">
+    <link rel="icon" href="{{ asset(env('APP_LOGO_KASBON')) }}" sizes="16x16" type="image/png">
 
     <!-- Google fonts-->
 
@@ -38,7 +38,7 @@
         <div class="row h-100">
             <div class="col-10 col-md-6 col-lg-5 col-xl-3 mx-auto text-center align-self-center">
                 <div class="loader-cube-wrap loader-cube-animate mx-auto">
-                    <img src="{{ asset(env('APP_LOGO')) }}" alt="Logo">
+                    <img src="{{ asset(env('APP_LOGO_KASBON')) }}" alt="Logo">
                     <p class="mt-4">Aplikasi Keperawatan<br><strong>Please wait...</strong></p>
                 </div>
             </div>
@@ -66,7 +66,7 @@
             <form action="{{ route('login') }}" method="post">
                 @csrf
                 <div class="col-10 col-md-6 col-lg-5 col-xl-3 mx-auto align-self-center text-center py-4">
-                    <img src="{{ asset(env('APP_LOGO')) }}" style="width: 100%" alt=""><br>
+                    <img src="{{ asset(env('APP_LOGO_KASBON')) }}" style="width: 100%" alt=""><br>
                     <h1 class="mb-4 text-color-theme">Sign in</h1>
                     @if ($errors->any())
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
